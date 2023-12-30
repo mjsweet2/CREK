@@ -6174,6 +6174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e44c1980ac4fde45896a8863662ac6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKeyboard: 0
   lMotionInput: {x: 0, y: 0, z: 0}
   rMotionInput: {x: 0, y: 0, z: 0}
   maxValue: 0

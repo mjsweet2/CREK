@@ -170,6 +170,7 @@ MonoBehaviour:
   planner: {fileID: 248330691}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -450,7 +451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65067cc5c32389f43af85c8c93c4f351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  articulatedBalDiff: {fileID: 964118698}
+  articulatedBalDiff: {fileID: 0}
   machineBalDiff: {fileID: 644066941}
   trajectoryNames: []
   trajectoryTypes: []
@@ -788,6 +789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e44c1980ac4fde45896a8863662ac6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKeyboard: 0
   lMotionInput: {x: 0, y: 0, z: 0}
   rMotionInput: {x: 0, y: 0, z: 0}
   maxValue: 0
@@ -1142,7 +1144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 113504a3c499c6c4daa94947faba993f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phys: {fileID: 964118698}
+  phys: {fileID: 0}
   rsPoseController: {fileID: 1773630691}
   msPoseController: {fileID: 1308235533}
   inputDeck: {fileID: 1830854459}
@@ -1237,6 +1239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   taskMessageService: {fileID: 965329892}
   topics: []
+  nonLocalTopics: []
   currentMessage: 
 --- !u!1 &658847957
 GameObject:
@@ -1304,6 +1307,86 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &715111295
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+      propertyPath: m_Name
+      value: robotchair
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+--- !u!1 &715111296 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 76dde24a1e606364c92b921b5c007e6e, type: 3}
+  m_PrefabInstance: {fileID: 715111295}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &715111297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715111296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f406ebbd8a9d1a4fab45692b03bfed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  left: {fileID: 0}
+  right: {fileID: 0}
+  orientationSensor: {fileID: 0}
+  orientation: {x: 0, y: 0, z: 0}
+  sensorString: 
+  usePhysics: 0
 --- !u!1 &721848706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,7 +1398,7 @@ GameObject:
   - component: {fileID: 721848707}
   - component: {fileID: 721848708}
   m_Layer: 0
-  m_Name: NSMotionDB
+  m_Name: CRMotionDB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1344,11 +1427,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 721848706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe658abbccd115a4b9dc8acbd1ea395e, type: 3}
+  m_Script: {fileID: 11500000, guid: 572c69e6e5135ab44b905eabbed6df2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dbName: baldiff02.db
-  connectOnStart: 1
+  dbName: 
+  connectOnStart: 0
 --- !u!1 &827612699
 GameObject:
   m_ObjectHideFlags: 0
@@ -1473,21 +1556,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineBalDiff: {fileID: 644066941}
   planner: {fileID: 248330691}
-  nsMotiondb: {fileID: 721848708}
-  nsTaskdb: {fileID: 1212715605}
+  crMotiondb: {fileID: 0}
+  crTaskdb: {fileID: 0}
   machineBalDiffTask: {fileID: 2081131542}
-  articulatedBalDiff: {fileID: 964118698}
---- !u!114 &964118698 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3781601380076531381, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-  m_PrefabInstance: {fileID: 3781601380198901279}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f406ebbd8a9d1a4fab45692b03bfed5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  articulatedBalDiff: {fileID: 0}
 --- !u!1 &965329891
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,7 +1666,7 @@ MonoBehaviour:
   stand: {fileID: 0}
   shell: {fileID: 902350713}
   machineBalDiff: {fileID: 644066941}
-  articulatedBalDiff: {fileID: 964118698}
+  articulatedBalDiff: {fileID: 0}
   spawnPoints: []
   spawnIndex: 0
 --- !u!1 &1076412222
@@ -1798,7 +1870,7 @@ GameObject:
   - component: {fileID: 1212715606}
   - component: {fileID: 1212715605}
   m_Layer: 0
-  m_Name: NSTaskDB
+  m_Name: CRTaskDB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1813,10 +1885,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1212715604}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a76182437daf34f9d224faff4fbb90, type: 3}
+  m_Script: {fileID: 11500000, guid: 8175777e1f41482479df8359b5e442aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dbName: triketask19.db
+  dbName: dummyTask.db
   connectOnStart: 1
 --- !u!4 &1212715606
 Transform:
@@ -1879,6 +1951,7 @@ MonoBehaviour:
   planner: {fileID: 248330691}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -2646,60 +2719,3 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102551405}
   m_CullTransparentMesh: 1
---- !u!1001 &3781601380198901279
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_RootOrder
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3742573848796318033, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4088032313049060331, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}
-      propertyPath: m_Name
-      value: robotchair
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b2133d944966fad44a83b0b7a0ddbb18, type: 3}

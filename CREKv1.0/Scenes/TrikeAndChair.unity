@@ -497,6 +497,7 @@ MonoBehaviour:
   planner: {fileID: 2073521553}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -688,6 +689,7 @@ MonoBehaviour:
   planner: {fileID: 2073521553}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -966,9 +968,9 @@ MonoBehaviour:
   taskMessageService: {fileID: 241445202}
   topics:
   - MOTIONSTARTED
-  - NSC/Trike/Motion/poseSegs
+  - CR/Trike/Motion/poseSegs
   nonLocalTopics:
-  - NSC/Trike/Motion/poseSegs
+  - CR/Trike/Motion/poseSegs
   currentMessage: 
 --- !u!114 &162235165
 MonoBehaviour:
@@ -1132,6 +1134,7 @@ MonoBehaviour:
   planner: {fileID: 2073521553}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -1588,7 +1591,7 @@ GameObject:
   - component: {fileID: 350256449}
   - component: {fileID: 350256448}
   m_Layer: 0
-  m_Name: MotionDBBalDiff
+  m_Name: CRMotionDBBalDiff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1603,10 +1606,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 350256447}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe658abbccd115a4b9dc8acbd1ea395e, type: 3}
+  m_Script: {fileID: 11500000, guid: 572c69e6e5135ab44b905eabbed6df2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dbName: baldiff02.db
+  dbName: baldiff03.db
   connectOnStart: 1
 --- !u!4 &350256449
 Transform:
@@ -2278,8 +2281,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineBalDiff: {fileID: 1412865551}
   planner: {fileID: 1663439967}
-  nsMotiondb: {fileID: 350256448}
-  nsTaskdb: {fileID: 2089660985}
+  crMotiondb: {fileID: 350256448}
+  crTaskdb: {fileID: 2089660985}
   machineBalDiffTask: {fileID: 0}
   articulatedBalDiff: {fileID: 3341604728515489148}
 --- !u!1 &611194650
@@ -3049,8 +3052,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machine2ZXYE: {fileID: 162235165}
   planner: {fileID: 2073521553}
-  nsMotiondb: {fileID: 1977623932}
-  nsTaskdb: {fileID: 1587454762}
+  crMotiondb: {fileID: 1977623932}
+  crTaskdb: {fileID: 1587454762}
   machine2ZXYETask: {fileID: 2030674625}
   articulated2ZXYE: {fileID: 460529603}
   udpSocketServer: {fileID: 866772779}
@@ -3316,6 +3319,7 @@ MonoBehaviour:
   planner: {fileID: 2073521553}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -3975,7 +3979,7 @@ GameObject:
   - component: {fileID: 1104122590}
   - component: {fileID: 1104122592}
   m_Layer: 0
-  m_Name: NSCClientBD
+  m_Name: CRClientBD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4005,7 +4009,7 @@ MonoBehaviour:
   mqttMessages: []
   uiMessages: []
   topics:
-  - NSC/nothing
+  - CR/nothing
   taskMessageSubscriber: {fileID: 0}
   loopInterval: 0
   messageCount: 0
@@ -5165,9 +5169,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   taskMessageService: {fileID: 1783742831}
   topics:
-  - NSC/BalDiff/Motion/pose.tr
+  - CR/BalDiff/Motion/pose.tr
   nonLocalTopics:
-  - NSC/BalDiff/Motion/pose.tr
+  - CR/BalDiff/Motion/pose.tr
   currentMessage: 
 --- !u!1 &1436684377
 GameObject:
@@ -5364,6 +5368,7 @@ MonoBehaviour:
   planner: {fileID: 2073521553}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -5401,7 +5406,7 @@ GameObject:
   - component: {fileID: 1475628359}
   - component: {fileID: 1475628358}
   m_Layer: 0
-  m_Name: NSCClient
+  m_Name: CRClient
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5461,7 +5466,7 @@ MonoBehaviour:
   mqttMessages: []
   uiMessages: []
   topics:
-  - NSC/nothing
+  - CR/nothing
   taskMessageSubscriber: {fileID: 0}
   loopInterval: 0
   messageCount: 0
@@ -5867,7 +5872,7 @@ GameObject:
   - component: {fileID: 1587454763}
   - component: {fileID: 1587454762}
   m_Layer: 0
-  m_Name: NSTaskDB
+  m_Name: CRTaskDB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5882,10 +5887,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1587454761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a76182437daf34f9d224faff4fbb90, type: 3}
+  m_Script: {fileID: 11500000, guid: 8175777e1f41482479df8359b5e442aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dbName: triketask25.db
+  dbName: triketask012.db
   connectOnStart: 1
 --- !u!4 &1587454763
 Transform:
@@ -6156,6 +6161,7 @@ MonoBehaviour:
   planner: {fileID: 1663439967}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -6689,6 +6695,7 @@ MonoBehaviour:
   planner: {fileID: 2073521553}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -6733,6 +6740,7 @@ MonoBehaviour:
   planner: {fileID: 1663439967}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -6791,6 +6799,7 @@ MonoBehaviour:
   planner: {fileID: 2073521553}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -7010,7 +7019,7 @@ GameObject:
   - component: {fileID: 1977623933}
   - component: {fileID: 1977623932}
   m_Layer: 0
-  m_Name: NSMotionDB
+  m_Name: CRMotionDB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7025,7 +7034,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1977623931}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe658abbccd115a4b9dc8acbd1ea395e, type: 3}
+  m_Script: {fileID: 11500000, guid: 572c69e6e5135ab44b905eabbed6df2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dbName: zxyetrike18.db
@@ -7389,6 +7398,7 @@ MonoBehaviour:
   planner: {fileID: 2073521553}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -7447,6 +7457,7 @@ MonoBehaviour:
   planner: {fileID: 2073521553}
   currTraj: {fileID: 0}
   currentNode: 
+  currentMotionName: 
   currentMotionIsOver: 0
   stateInput: 
   stateInputFloat: 0
@@ -7483,7 +7494,7 @@ GameObject:
   - component: {fileID: 2089660984}
   - component: {fileID: 2089660985}
   m_Layer: 0
-  m_Name: NSTaskDBBalDiff
+  m_Name: CRTaskDBBalDiff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7512,10 +7523,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2089660983}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a76182437daf34f9d224faff4fbb90, type: 3}
+  m_Script: {fileID: 11500000, guid: 8175777e1f41482479df8359b5e442aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dbName: triketask25.db
+  dbName: dummyTask.db
   connectOnStart: 1
 --- !u!1 &2093587520
 GameObject:
