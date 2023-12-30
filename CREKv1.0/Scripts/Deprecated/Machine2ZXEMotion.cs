@@ -1,31 +1,16 @@
-﻿/* Copyright (C) 2023 Michael Sweet - All Rights Reserved
- * mjcsweet2@outlook.com
- * You may use, distribute and modify this code under the terms of the GNU General Public License v3.0.
- * You should have received a copy of the GNU General Public License v3.0 license with this file.
- */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-// A motion is a state machine of Trajectories.
-// Uses a nodes table and edge table to control a complex arrangement of Trajectories
-// a motion table keeps track of the first node in state machine islands
-
-//RTMotion take1 was trying to build a hodgepodge tree structure
-//RTMotion take2 will build a relational database structure, like the db I use already,
-//but types will be created at build time to allow so input nodes 
-//won't need a bunch text conversions for computations
-
-
-public class Motion : MonoBehaviour
+public class Machine2ZXEMotion : MonoBehaviour
 {
 	public CRMotionDBController nsdb;
-	public Machine2ZXE2ZXYKPlanner planner;
+	public Machine2ZXEPlanner planner;
 
 	public Trajectory currTraj;
 
 	public string currentNode;
+	public string currentMotionName;
 	public bool currentMotionIsOver;
 	public string stateInput;
 	public float stateInputFloat;
@@ -99,10 +84,13 @@ public class Motion : MonoBehaviour
 
 		if (retNode == "")
 		{
+			currentMotionName = "";
 			currentNode = "";
 			return;
 		}
 
+
+		currentMotionName = motionName;
 		currentNode = retNode;
 		currentMotionIsOver = false;
 		Debug.Log("traj name: " + nsdb.getTrajectoryByNode(currentNode));
@@ -125,7 +113,8 @@ public class Motion : MonoBehaviour
 	}
 	void visitNode(string n)
 	{
-		if (n != "nonode") {
+		if (n != "nonode")
+		{
 
 			if (currTraj == null)
 				return;
@@ -175,7 +164,8 @@ public class Motion : MonoBehaviour
 			TrajJSON trajJSON = new TrajJSON();
 			trajJSON.resolution = rr;// res;
 
-			Vector3[] points = new Vector3[9];
+			// changed this from 9 to 5, my trajectory doesn't hand let resolution than keyframes well
+			Vector3[] points = new Vector3[5];
 			planner.generateStepPoints(ref points, aa, bb);// a, b);
 			for (int i = 0; i < points.Length; i++)
 			{
@@ -248,7 +238,7 @@ public class Motion : MonoBehaviour
 	//these functions follow each input node in a depth firstsearch
 	Vector3 resolveVectorInput(CRInputJSON nsInputJSON)
 	{
-		if(nsInputJSON.nodename == "")
+		if (nsInputJSON.nodename == "")
 			return Vector3.negativeInfinity;
 
 		//IntFunction, VectorFunction, Float, Vector, Math, VectorMath
@@ -280,7 +270,7 @@ public class Motion : MonoBehaviour
 
 			return c;
 		}
-		else if(planner.sessionVector3Exists(nsInputJSON.nodename)) //is this a session variable
+		else if (planner.sessionVector3Exists(nsInputJSON.nodename)) //is this a session variable
 		{
 			return planner.getVectorValue(nsInputJSON.nodename);
 		}
@@ -295,7 +285,7 @@ public class Motion : MonoBehaviour
 		//IntFunction, VectorFunction, Float, Vector, Math, VectorMath
 		string nodeType = nsdb.getTypeByNode(nsInputJSON.nodename);
 
-		if(nodeType == "Int")
+		if (nodeType == "Int")
 		{
 			return nsdb.getValueFromIntNode(nsInputJSON.nodename);
 		}
@@ -304,7 +294,7 @@ public class Motion : MonoBehaviour
 			string funcName = nsdb.getFunctionByFunctionNode(nsInputJSON.nodename);
 			return planner.getIntValue(funcName);
 		}
-		if(planner.doesIntExist(nsInputJSON.nodename))
+		if (planner.doesIntExist(nsInputJSON.nodename))
 		{
 			return planner.getIntValue(nsInputJSON.nodename);
 		}
@@ -334,7 +324,7 @@ public class Motion : MonoBehaviour
 		//IntFunction, VectorFunction, Float, Vector, Math, VectorMath
 		string nodeType = nsdb.getTypeByNode(nsInputJSON.nodename);
 
-		if(nodeType == "Float")
+		if (nodeType == "Float")
 		{
 			return nsdb.getValueFromFloatNode(nsInputJSON.nodename);
 		}
@@ -343,7 +333,7 @@ public class Motion : MonoBehaviour
 			string funcName = nsdb.getFunctionByFunctionNode(nsInputJSON.nodename);
 			return planner.getFloatValue(funcName);
 		}
-		else if(nodeType == "Math")
+		else if (nodeType == "Math")
 		{
 			string vMathInputs = nsdb.getInputStringFromMathNode(nsInputJSON.nodename);
 			string ops = nsdb.getOperationFromMathNode(nsInputJSON.nodename);
@@ -351,7 +341,7 @@ public class Motion : MonoBehaviour
 
 			float a = resolveFloatInput(vMathInputsJSON.inputs[0]);
 			float b = resolveFloatInput(vMathInputsJSON.inputs[1]);
-			
+
 			float c = float.NegativeInfinity;
 			if (ops == "ADD") { c = a + b; }
 			else if (ops == "SUB") { c = a - b; }
@@ -365,22 +355,22 @@ public class Motion : MonoBehaviour
 
 	//uses the Trajectories in the Planner
 	Trajectory getTrajectoryByName(string n)
-	{	
-		if( planner.trajectories.ContainsKey(n) )
+	{
+		if (planner.trajectories.ContainsKey(n))
 			return planner.trajectories[n];
 		else
 			return null;
 	}
 	public void resetMotion()
 	{
-		currentNode = nsdb.getFirstNodeByMotionName("TODOPUTNAMEINHERE");
+		currentNode = nsdb.getFirstNodeByMotionName(currentMotionName);
 		currentMotionIsOver = false;
 		currTraj = getTrajectoryByName(nsdb.getTrajectoryByNode(currentNode));
 		currTraj.resetTrajectory(motionSpeed);
 	}
 	void processEdges()
 	{
-		
+
 		if (currTraj == null)
 			return;
 
@@ -401,40 +391,44 @@ public class Motion : MonoBehaviour
 		{
 			return;
 		}
-		else 
+		else
 		{
-			if (!(nsdb.getEdgeAByNode(currentNode) == "noedge")) {
+			if (!(nsdb.getEdgeAByNode(currentNode) == "noedge"))
+			{
 
 				currentNode = nsdb.getNextNodeByEdge(nsdb.getEdgeAByNode(currentNode));
 				currTraj = resolveTrajByNodeName(currentNode);
 				currTraj.resetTrajectory();
-				
+
 				return;
 			}
-			if (!(nsdb.getEdgeBByNode(currentNode) == "noedge") && stateInputFloat == 0) {
+			if (!(nsdb.getEdgeBByNode(currentNode) == "noedge") && stateInputFloat == 0)
+			{
 
 				currentNode = nsdb.getNextNodeByEdge(nsdb.getEdgeBByNode(currentNode));
 				currTraj = resolveTrajByNodeName(currentNode);
 				currTraj.resetTrajectory();
-				
+
 				return;
 			}
-			if (!(nsdb.getEdgeCByNode(currentNode) == "noedge") && stateInputFloat < 0) {
+			if (!(nsdb.getEdgeCByNode(currentNode) == "noedge") && stateInputFloat < 0)
+			{
 
 				currentNode = nsdb.getNextNodeByEdge(nsdb.getEdgeCByNode(currentNode));
 				currTraj = resolveTrajByNodeName(currentNode);
 				currTraj.resetTrajectory();
-				
+
 				return;
 			}
-			if (!(nsdb.getEdgeDByNode(currentNode) == "noedge") && stateInputFloat > 0) {
+			if (!(nsdb.getEdgeDByNode(currentNode) == "noedge") && stateInputFloat > 0)
+			{
 
 				currentNode = nsdb.getNextNodeByEdge(nsdb.getEdgeDByNode(currentNode));
 				currTraj = resolveTrajByNodeName(currentNode);
 				currTraj.resetTrajectory();
-				
-				return;	
-			}		
+
+				return;
+			}
 		}
 	}
 

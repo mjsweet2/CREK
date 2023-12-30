@@ -1,21 +1,16 @@
-/* Copyright (C) 2023 Michael Sweet - All Rights Reserved
- * mjcsweet2@outlook.com
- * You may use, distribute and modify this code under the terms of the GNU General Public License v3.0.
- * You should have received a copy of the GNU General Public License v3.0 license with this file.
- */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
 
-public class ZXEZXYKQuadShell : MonoBehaviour
+public class Machine2ZXEShell : MonoBehaviour
 {
 
-    public Machine2ZXE2ZXYK machine2ZXE2ZXYK;
-    public Machine2ZXE2ZXYKPlanner planner;
+    public Machine2ZXE machine2ZXE;
+    public Machine2ZXEPlanner planner;
     public CRMotionDBController db;
-    public Articulated2ZXE2ZXYK articulated2ZXE2ZXYK;
+    public Articulated2ZXE articulated2ZXE;
 
     public UDPSocketServer udpSocketServer;
 
@@ -231,9 +226,9 @@ public class ZXEZXYKQuadShell : MonoBehaviour
 
 
             }
-            else if (machine2ZXE2ZXYK.cmdExists(iTokens[0]))
+            else if (machine2ZXE.cmdExists(iTokens[0]))
             {
-                machine2ZXE2ZXYK.runCmd(iTokens[0]);
+                machine2ZXE.runCmd(iTokens[0]);
             }
             else if ((firstNodeNamelf + firstNodeNamelr + firstNodeNamerf + firstNodeNamerr + firstNodeNamesegs) != "")// this is a motion call
             {
@@ -257,13 +252,13 @@ public class ZXEZXYKQuadShell : MonoBehaviour
 
                 if (paramsLoaded)
                 {
-                    if (machine2ZXE2ZXYK.motionMode == Machine2ZXE2ZXYK.MOTIONMODE.MOTION)
+                    if (machine2ZXE.motionMode == Machine2ZXE.MOTIONMODE.MOTION)
                     {
-                        machine2ZXE2ZXYK.runMotionOnAllChannels(iTokens[0]);
+                        machine2ZXE.runMotionOnAllChannels(iTokens[0]);
                     }
-                    else if (machine2ZXE2ZXYK.motionMode == Machine2ZXE2ZXYK.MOTIONMODE.TRAJECTORY)
+                    else if (machine2ZXE.motionMode == Machine2ZXE.MOTIONMODE.TRAJECTORY)
                     {
-                        machine2ZXE2ZXYK.runTrajectoryOnAllChannels(iTokens[0]);
+                        machine2ZXE.runTrajectoryOnAllChannels(iTokens[0]);
                     }
                 }
 

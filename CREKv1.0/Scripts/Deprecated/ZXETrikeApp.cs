@@ -1,14 +1,8 @@
-/* Copyright (C) 2023 Michael Sweet - All Rights Reserved
- * mjcsweet2@outlook.com
- * You may use, distribute and modify this code under the terms of the GNU General Public License v3.0.
- * You should have received a copy of the GNU General Public License v3.0 license with this file.
- */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class ZXEZXYKQuadApp : MonoBehaviour
+public class ZXETrikeApp : MonoBehaviour
 {
 
     public Canvas inputCanvas;
@@ -20,9 +14,9 @@ public class ZXEZXYKQuadApp : MonoBehaviour
 
     public GameObject stand;
 
-    public ZXEZXYKQuadShell zxezxykQuadShell;
-    public Machine2ZXE2ZXYK machine2ZXE2ZXYK;
-    public Articulated2ZXE2ZXYK articulated2ZXE2ZXYK;
+    public Machine2ZXEShell shell;
+    public Machine2ZXE machine2ZXE;
+    public Articulated2ZXE articulated2ZXE;
     public CRMotionDBController db;
 
     public Transform[] spawnPoints;
@@ -56,7 +50,7 @@ public class ZXEZXYKQuadApp : MonoBehaviour
     //runtime positioning doesn't work on physics objects
     public void toggleSpawn()
     {
-        machine2ZXE2ZXYK.gameObject.SetActive(false);
+        machine2ZXE.gameObject.SetActive(false);
         //articulated4ZXE.gameObject.transform.position = spawnPoints[spawnIndex].position;
         //machine4ZXE.gameObject.SetActive(true);
 
@@ -84,12 +78,12 @@ public class ZXEZXYKQuadApp : MonoBehaviour
     }
     public void connectPoseController()
     {
-        machine2ZXE2ZXYK.rsPoseController.connectUDPClient();
+        machine2ZXE.rsPoseController.connectUDPClient();
     }
     public void runCmd()
     {
 
-        zxezxykQuadShell.runCmd(inputIF.text);
+        shell.runCmd(inputIF.text);
         inputIF.text = "";
 
 

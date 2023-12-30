@@ -1,14 +1,8 @@
-/* Copyright (C) 2023 Michael Sweet - All Rights Reserved
- * mjcsweet2@outlook.com
- * You may use, distribute and modify this code under the terms of the GNU General Public License v3.0.
- * You should have received a copy of the GNU General Public License v3.0 license with this file.
- */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class ZXEZXYKQuadApp : MonoBehaviour
+public class BalTrikeApp : MonoBehaviour
 {
 
     public Canvas inputCanvas;
@@ -20,16 +14,16 @@ public class ZXEZXYKQuadApp : MonoBehaviour
 
     public GameObject stand;
 
-    public ZXEZXYKQuadShell zxezxykQuadShell;
-    public Machine2ZXE2ZXYK machine2ZXE2ZXYK;
-    public Articulated2ZXE2ZXYK articulated2ZXE2ZXYK;
+    public BalTrikeShell balTrikeShell;
+    public MachineBalTrike machineBalTrike;
+    public ArticulatedBalTrike articulatedBalTrike;
     public CRMotionDBController db;
 
     public Transform[] spawnPoints;
     public int spawnIndex;
 
+    public UDPSocketClient remotePhys;
 
-    public Motion testMotion;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,7 +50,7 @@ public class ZXEZXYKQuadApp : MonoBehaviour
     //runtime positioning doesn't work on physics objects
     public void toggleSpawn()
     {
-        machine2ZXE2ZXYK.gameObject.SetActive(false);
+        machineBalTrike.gameObject.SetActive(false);
         //articulated4ZXE.gameObject.transform.position = spawnPoints[spawnIndex].position;
         //machine4ZXE.gameObject.SetActive(true);
 
@@ -84,12 +78,12 @@ public class ZXEZXYKQuadApp : MonoBehaviour
     }
     public void connectPoseController()
     {
-        machine2ZXE2ZXYK.rsPoseController.connectUDPClient();
+        machineBalTrike.rsPoseController.connectUDPClient();
     }
     public void runCmd()
     {
 
-        zxezxykQuadShell.runCmd(inputIF.text);
+        balTrikeShell.runCmd(inputIF.text);
         inputIF.text = "";
 
 
@@ -99,6 +93,13 @@ public class ZXEZXYKQuadApp : MonoBehaviour
         //inputIF.Select();
         //inputIF.ActivateInputField();
 
+
+    }
+
+    public void connectRemotePhysUDPClient()
+    {
+
+        remotePhys.startNetwork();
 
     }
 }

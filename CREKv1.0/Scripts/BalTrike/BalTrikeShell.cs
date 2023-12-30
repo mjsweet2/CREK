@@ -1,21 +1,16 @@
-/* Copyright (C) 2023 Michael Sweet - All Rights Reserved
- * mjcsweet2@outlook.com
- * You may use, distribute and modify this code under the terms of the GNU General Public License v3.0.
- * You should have received a copy of the GNU General Public License v3.0 license with this file.
- */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
 
-public class ZXEZXYKQuadShell : MonoBehaviour
+public class BalTrikeShell : MonoBehaviour
 {
 
-    public Machine2ZXE2ZXYK machine2ZXE2ZXYK;
-    public Machine2ZXE2ZXYKPlanner planner;
+    public MachineBalTrike machineBalTrike;
+    public BalTrikePlanner balTrikePlanner;
     public CRMotionDBController db;
-    public Articulated2ZXE2ZXYK articulated2ZXE2ZXYK;
+    public ArticulatedBalTrike articulatedBalTrike;
 
     public UDPSocketServer udpSocketServer;
 
@@ -82,11 +77,8 @@ public class ZXEZXYKQuadShell : MonoBehaviour
         functions.Add("parameterlisttest", parameterlisttest);
         functions.Add("setsessionint", setsessionint);
         functions.Add("setsessionvector", setsessionvector);
-        functions.Add("importsessionOLDvalues", importsessionOLDvalues);
-        functions.Add("exportsessionOLDvalues", exportsessionOLDvalues);
         functions.Add("importsessionvalues", importsessionvalues);
         functions.Add("exportsessionvalues", exportsessionvalues);
-        functions.Add("setcurrentcrouch", setcurrentcrouch);
         functions.Add("getvaluetype", getvaluetype);
     }
 
@@ -96,41 +88,29 @@ public class ZXEZXYKQuadShell : MonoBehaviour
     }
     public void getvaluetype(string a = "", string b = "", string c = "", string d = "", string e = "")
     {
-        Debug.Log(planner.getValueType(a));
+        Debug.Log(balTrikePlanner.getValueType(a));
     }
     public void importsessionvalues(string a = "", string b = "", string c = "", string d = "", string e = "")
     {
         if (a == "")
             return;
-        planner.importsessionvalues(a);
+        balTrikePlanner.importsessionvalues(a);
 
     }
     public void exportsessionvalues(string a = "", string b = "", string c = "", string d = "", string e = "")
     {
         if (a == "")
             return;
-        planner.exportsessionvalues(a);
+        balTrikePlanner.exportsessionvalues(a);
     }
-    public void importsessionOLDvalues(string a = "", string b = "", string c = "", string d = "", string e = "")
-    {
-        if (a == "")
-            return;
-        planner.importsessionOLDvalues(a);
 
-    }
-    public void exportsessionOLDvalues(string a = "", string b = "", string c = "", string d = "", string e = "")
-    {
-        if (a == "")
-            return;
-        planner.exportsessionOLDvalues(a);
-    }
     public void setsessionint(string name, int value)
     {
-        planner.setSessionInt(name, value);
+        balTrikePlanner.setSessionInt(name, value);
     }
     public void setsessionvector(string name, Vector3 value)
     {
-        planner.setSessionVector3(name, value);
+        balTrikePlanner.setSessionVector3(name, value);
     }
     public void setsessionint(string a = "", string b = "", string c = "", string d = "", string e = "")
     {
@@ -155,10 +135,7 @@ public class ZXEZXYKQuadShell : MonoBehaviour
         }
 
     }
-    public void setcurrentcrouch(string a = "", string b = "", string c = "", string d = "", string e = "")
-    {
-        planner.setcurrentcrouch();
-    }
+   
     public void runCmd(string inputCmd)
     {
 
@@ -182,15 +159,25 @@ public class ZXEZXYKQuadShell : MonoBehaviour
         {
 
 
-            //is this a motion call
-            string firstNodeNamelf = db.getFirstNodeByMotionName(iTokens[0] + ".lf");
+            //is this a motion call?
+            string firstNodeNamesp = db.getFirstNodeByMotionName(iTokens[0] + ".sp");
+            string firstNodeNamelb = db.getFirstNodeByMotionName(iTokens[0] + ".lb");
+            string firstNodeNamerb = db.getFirstNodeByMotionName(iTokens[0] + ".rb");
             string firstNodeNamelr = db.getFirstNodeByMotionName(iTokens[0] + ".lr");
-            string firstNodeNamerf = db.getFirstNodeByMotionName(iTokens[0] + ".rf");
             string firstNodeNamerr = db.getFirstNodeByMotionName(iTokens[0] + ".rr");
             string firstNodeNamesegs = db.getFirstNodeByMotionName(iTokens[0] + ".segs");
 
+            //is this a trajectory call?
+            // trajsp || trajlb || trajrb || trajlr || trajrr || trajsegs
+            bool trajsp = balTrikePlanner.doesTrajectoryExist(iTokens[0] + ".sp");
+            bool trajlb = balTrikePlanner.doesTrajectoryExist(iTokens[0] + ".lb");
+            bool trajrb = balTrikePlanner.doesTrajectoryExist(iTokens[0] + ".rb");
+            bool trajlr = balTrikePlanner.doesTrajectoryExist(iTokens[0] + ".lr");
+            bool trajrr = balTrikePlanner.doesTrajectoryExist(iTokens[0] + ".rr");
+            bool trajsegs = balTrikePlanner.doesTrajectoryExist(iTokens[0] + ".segs");
 
-            Debug.Log("firstNodeName: " + firstNodeNamelf + firstNodeNamelr + firstNodeNamerf + firstNodeNamerr + firstNodeNamesegs);
+
+            Debug.Log("firstNodeName: " + firstNodeNamesp + firstNodeNamelb + firstNodeNamerb + firstNodeNamelr + firstNodeNamerr + firstNodeNamesegs);
 
             //is this a shell function
             if (vectorFunctions.ContainsKey(iTokens[0]))
@@ -231,11 +218,11 @@ public class ZXEZXYKQuadShell : MonoBehaviour
 
 
             }
-            else if (machine2ZXE2ZXYK.cmdExists(iTokens[0]))
+            else if (machineBalTrike.cmdExists(iTokens[0]))
             {
-                machine2ZXE2ZXYK.runCmd(iTokens[0]);
+                machineBalTrike.runCmd(iTokens[0]);
             }
-            else if ((firstNodeNamelf + firstNodeNamelr + firstNodeNamerf + firstNodeNamerr + firstNodeNamesegs) != "")// this is a motion call
+            else if ((firstNodeNamesp + firstNodeNamelb + firstNodeNamerb + firstNodeNamelr + firstNodeNamerr + firstNodeNamesegs) != "")// this is a motion call
             {
                 //TODO
                 //resolve parameter requirements from the motion db, all channels
@@ -251,28 +238,31 @@ public class ZXEZXYKQuadShell : MonoBehaviour
 
                 //typechecking+set session variables in planner
                 //returns true if no parameters are required.
+                //returns true if no motion exists
                 bool paramsLoaded = loadMotionInputs(ref iTokens);
                 if (!paramsLoaded)
                     Debug.Log("param loaded: failed");
 
                 if (paramsLoaded)
                 {
-                    if (machine2ZXE2ZXYK.motionMode == Machine2ZXE2ZXYK.MOTIONMODE.MOTION)
+                    if (machineBalTrike.motionMode == MachineBalTrike.MOTIONMODE.MOTION)
                     {
-                        machine2ZXE2ZXYK.runMotionOnAllChannels(iTokens[0]);
-                    }
-                    else if (machine2ZXE2ZXYK.motionMode == Machine2ZXE2ZXYK.MOTIONMODE.TRAJECTORY)
-                    {
-                        machine2ZXE2ZXYK.runTrajectoryOnAllChannels(iTokens[0]);
+                        machineBalTrike.runMotionOnAllChannels(iTokens[0]);
                     }
                 }
 
+            }
+            else if(trajsp || trajlb || trajrb || trajlr || trajrr || trajsegs) //this is a trajectory call
+            {
+                if (machineBalTrike.motionMode == MachineBalTrike.MOTIONMODE.TRAJECTORY)
+                {
+                    machineBalTrike.runTrajectoryOnAllChannels(iTokens[0]);
+                }
             }
             else
             {
                 //do nothing
             }
-
 
         }
 
@@ -285,46 +275,77 @@ public class ZXEZXYKQuadShell : MonoBehaviour
 
         bool typesMatch = true;
 
-        string retStringlf = db.getInputStringByMotion(tokens[0] + ".lf");
+        string retStringsp = db.getInputStringByMotion(tokens[0] + ".sp");
+        string retStringlb = db.getInputStringByMotion(tokens[0] + ".lb");
+        string retStringrb = db.getInputStringByMotion(tokens[0] + ".rb");
         string retStringlr = db.getInputStringByMotion(tokens[0] + ".lr");
-        string retStringrf = db.getInputStringByMotion(tokens[0] + ".rf");
         string retStringrr = db.getInputStringByMotion(tokens[0] + ".rr");
         string retStringsegs = db.getInputStringByMotion(tokens[0] + ".segs");
 
         //if the motion node doesn't exist, set the string to an empty container
         //so my testing works
-        if (retStringlf == "") retStringlf = JsonUtility.ToJson(new CRInputsJSON());
+        if (retStringsp == "") retStringsp = JsonUtility.ToJson(new CRInputsJSON());
+
+        if (retStringlb == "") retStringlb = JsonUtility.ToJson(new CRInputsJSON());
+        if (retStringrb == "") retStringrb = JsonUtility.ToJson(new CRInputsJSON());
+
         if (retStringlr == "") retStringlr = JsonUtility.ToJson(new CRInputsJSON());
-        if (retStringrf == "") retStringrf = JsonUtility.ToJson(new CRInputsJSON());
         if (retStringrr == "") retStringrr = JsonUtility.ToJson(new CRInputsJSON());
+
         if (retStringsegs == "") retStringsegs = JsonUtility.ToJson(new CRInputsJSON());
 
+        CRInputsJSON spJSON = JsonUtility.FromJson<CRInputsJSON>(retStringsp);
 
-        CRInputsJSON lfJSON = JsonUtility.FromJson<CRInputsJSON>(retStringlf);
+        CRInputsJSON lbJSON = JsonUtility.FromJson<CRInputsJSON>(retStringlb);
+        CRInputsJSON rbJSON = JsonUtility.FromJson<CRInputsJSON>(retStringrb);
+
         CRInputsJSON lrJSON = JsonUtility.FromJson<CRInputsJSON>(retStringlr);
-        CRInputsJSON rfJSON = JsonUtility.FromJson<CRInputsJSON>(retStringrf);
         CRInputsJSON rrJSON = JsonUtility.FromJson<CRInputsJSON>(retStringrr);
+
         CRInputsJSON segsJSON = JsonUtility.FromJson<CRInputsJSON>(retStringsegs);
 
         //type checking   
-        if (lfJSON.inputs.Count > 0)
+        if (spJSON.inputs.Count > 0)
         {
-            Debug.Log("lfJSON.input.Count > 0");
-            if (lfJSON.inputs.Count != (tokens.Length - 1)) //first token is motion name
+            Debug.Log("spJSON.input.Count > 0");
+            if (spJSON.inputs.Count != (tokens.Length - 1)) //first token is motion name
             {
                 typesMatch = false;
-                Debug.Log("lfJSON input count didn't match");
+                Debug.Log("spJSON input count didn't match");
             }
             else
             {
                 for (int i = 1; i < tokens.Length; i++)
                 {
-                    if (planner.getValueType(tokens[i]) != lfJSON.inputs[i - 1].returntype)
+                    if (balTrikePlanner.getValueType(tokens[i]) != spJSON.inputs[i - 1].returntype)
+                    {
+                        Debug.Log("spJSON type mismatch index: " + i.ToString());
+                        Debug.Log("from planner: " + balTrikePlanner.getValueType(tokens[i]));
+                        Debug.Log("from inputString: " + spJSON.inputs[i - 1].returntype);
+                        typesMatch = false;
+                    }
+                }
+            }
+        }
+
+        if (lbJSON.inputs.Count > 0)
+        {
+            Debug.Log("lfJSON.input.Count > 0");
+            if (lbJSON.inputs.Count != (tokens.Length - 1)) //first token is motion name
+            {
+                typesMatch = false;
+                Debug.Log("lbJSON input count didn't match");
+            }
+            else
+            {
+                for (int i = 1; i < tokens.Length; i++)
+                {
+                    if (balTrikePlanner.getValueType(tokens[i]) != lbJSON.inputs[i - 1].returntype)
                     {
                         typesMatch = false;
-                        Debug.Log("lfJSON type mismatch index: " + i.ToString());
-                        Debug.Log("from planner: " + planner.getValueType(tokens[i]));
-                        Debug.Log("from inputString: " + lfJSON.inputs[i - 1].returntype);
+                        Debug.Log("lbJSON type mismatch index: " + i.ToString());
+                        Debug.Log("from planner: " + balTrikePlanner.getValueType(tokens[i]));
+                        Debug.Log("from inputString: " + lbJSON.inputs[i - 1].returntype);
                     }
                 }
 
@@ -343,33 +364,33 @@ public class ZXEZXYKQuadShell : MonoBehaviour
             {
                 for (int i = 1; i < tokens.Length; i++)
                 {
-                    if (planner.getValueType(tokens[i]) != lrJSON.inputs[i - 1].returntype)
+                    if (balTrikePlanner.getValueType(tokens[i]) != lrJSON.inputs[i - 1].returntype)
                     {
                         typesMatch = false;
                         Debug.Log("lrJSON type mismatch index: " + i.ToString());
-                        Debug.Log("from planner: " + planner.getValueType(tokens[i]));
+                        Debug.Log("from planner: " + balTrikePlanner.getValueType(tokens[i]));
                         Debug.Log("from inputString: " + lrJSON.inputs[i - 1].returntype);
                     }
                 }
             }
         }
-        if (rfJSON.inputs.Count > 0)
+        if (rbJSON.inputs.Count > 0)
         {
-            Debug.Log("rfJSON.input.Count > 0");
-            if (rfJSON.inputs.Count != (tokens.Length - 1)) //first token is motion name
+            Debug.Log("rbJSON.input.Count > 0");
+            if (rbJSON.inputs.Count != (tokens.Length - 1)) //first token is motion name
             {
                 typesMatch = false;
-                Debug.Log("rfJSON input count didn't match");
+                Debug.Log("rbJSON input count didn't match");
             }
             else
             {
                 for (int i = 1; i < tokens.Length; i++)
                 {
-                    if (planner.getValueType(tokens[i]) != rfJSON.inputs[i - 1].returntype)
+                    if (balTrikePlanner.getValueType(tokens[i]) != rbJSON.inputs[i - 1].returntype)
                     {
-                        Debug.Log("rfJSON type mismatch index: " + i.ToString());
-                        Debug.Log("from planner: " + planner.getValueType(tokens[i]));
-                        Debug.Log("from inputString: " + rrJSON.inputs[i - 1].returntype);
+                        Debug.Log("rbJSON type mismatch index: " + i.ToString());
+                        Debug.Log("from planner: " + balTrikePlanner.getValueType(tokens[i]));
+                        Debug.Log("from inputString: " + rbJSON.inputs[i - 1].returntype);
                         typesMatch = false;
                     }
                 }
@@ -387,10 +408,10 @@ public class ZXEZXYKQuadShell : MonoBehaviour
             {
                 for (int i = 1; i < tokens.Length; i++)
                 {
-                    if (planner.getValueType(tokens[i]) != rrJSON.inputs[i - 1].returntype)
+                    if (balTrikePlanner.getValueType(tokens[i]) != rrJSON.inputs[i - 1].returntype)
                     {
                         Debug.Log("rrJSON type mismatch index: " + i.ToString());
-                        Debug.Log("from planner: " + planner.getValueType(tokens[i]));
+                        Debug.Log("from planner: " + balTrikePlanner.getValueType(tokens[i]));
                         Debug.Log("from inputString: " + rrJSON.inputs[i - 1].returntype);
                         typesMatch = false;
                     }
@@ -409,10 +430,10 @@ public class ZXEZXYKQuadShell : MonoBehaviour
             {
                 for (int i = 1; i < tokens.Length; i++)
                 {
-                    if (planner.getValueType(tokens[i]) != segsJSON.inputs[i - 1].returntype)
+                    if (balTrikePlanner.getValueType(tokens[i]) != segsJSON.inputs[i - 1].returntype)
                     {
                         Debug.Log("segsJSON type mismatch index: " + i.ToString());
-                        Debug.Log("from planner: " + planner.getValueType(tokens[i]));
+                        Debug.Log("from planner: " + balTrikePlanner.getValueType(tokens[i]));
                         Debug.Log("from inputString: " + segsJSON.inputs[i - 1].returntype);
                         typesMatch = false;
                     }
@@ -420,60 +441,73 @@ public class ZXEZXYKQuadShell : MonoBehaviour
             }
         }
 
-
         if (typesMatch)//set session variables for each channel
         {
             Debug.Log("setting session variables");
-            for (int i = 0; i < lfJSON.inputs.Count; i++)
+            for (int i = 0; i < spJSON.inputs.Count; i++)
             {
-                if (lfJSON.inputs[i].returntype == "int")
+                if (spJSON.inputs[i].returntype == "int")
                 {
-                    planner.setSessionInt(lfJSON.inputs[i].nodename, planner.getIntValue(tokens[i + 1]));
-                    Debug.Log("setting session lf int");
+                    balTrikePlanner.setSessionInt(spJSON.inputs[i].nodename, balTrikePlanner.getIntValue(tokens[i + 1]));
+                    Debug.Log("setting session sp int");
                 }
                 else //vector
                 {
-                    planner.setSessionVector3(lfJSON.inputs[i].nodename, planner.getVectorValue(tokens[i + 1]));
-                    Debug.Log("setting session lf vector");
+                    balTrikePlanner.setSessionVector3(spJSON.inputs[i].nodename, balTrikePlanner.getVectorValue(tokens[i + 1]));
+                    Debug.Log("setting session sp vector");
+                }
+            }
+
+            for (int i = 0; i < lbJSON.inputs.Count; i++)
+            {
+                if (lbJSON.inputs[i].returntype == "int")
+                {
+                    balTrikePlanner.setSessionInt(lbJSON.inputs[i].nodename, balTrikePlanner.getIntValue(tokens[i + 1]));
+                    Debug.Log("setting session lb int");
+                }
+                else //vector
+                {
+                    balTrikePlanner.setSessionVector3(lbJSON.inputs[i].nodename, balTrikePlanner.getVectorValue(tokens[i + 1]));
+                    Debug.Log("setting session lb vector");
                 }
             }
             for (int i = 0; i < lrJSON.inputs.Count; i++)
             {
                 if (lrJSON.inputs[i].returntype == "int")
                 {
-                    planner.setSessionInt(lrJSON.inputs[i].nodename, planner.getIntValue(tokens[i + 1]));
+                    balTrikePlanner.setSessionInt(lrJSON.inputs[i].nodename, balTrikePlanner.getIntValue(tokens[i + 1]));
                     Debug.Log("setting session lr int");
                 }
                 else //vector
                 {
-                    planner.setSessionVector3(lrJSON.inputs[i].nodename, planner.getVectorValue(tokens[i + 1]));
+                    balTrikePlanner.setSessionVector3(lrJSON.inputs[i].nodename, balTrikePlanner.getVectorValue(tokens[i + 1]));
                     Debug.Log("setting session lr vector");
 
                 }
             }
-            for (int i = 0; i < rfJSON.inputs.Count; i++)
+            for (int i = 0; i < rbJSON.inputs.Count; i++)
             {
-                if (rfJSON.inputs[i].returntype == "int")
+                if (rbJSON.inputs[i].returntype == "int")
                 {
-                    planner.setSessionInt(rfJSON.inputs[i].nodename, planner.getIntValue(tokens[i + 1]));
-                    Debug.Log("setting session rf int");
+                    balTrikePlanner.setSessionInt(rbJSON.inputs[i].nodename, balTrikePlanner.getIntValue(tokens[i + 1]));
+                    Debug.Log("setting session rb int");
                 }
                 else //vector
                 {
-                    planner.setSessionVector3(rfJSON.inputs[i].nodename, planner.getVectorValue(tokens[i + 1]));
-                    Debug.Log("setting session rf vector");
+                    balTrikePlanner.setSessionVector3(rbJSON.inputs[i].nodename, balTrikePlanner.getVectorValue(tokens[i + 1]));
+                    Debug.Log("setting session rb vector");
                 }
             }
             for (int i = 0; i < rrJSON.inputs.Count; i++)
             {
                 if (rrJSON.inputs[i].returntype == "int")
                 {
-                    planner.setSessionInt(rrJSON.inputs[i].nodename, planner.getIntValue(tokens[i + 1]));
+                    balTrikePlanner.setSessionInt(rrJSON.inputs[i].nodename, balTrikePlanner.getIntValue(tokens[i + 1]));
                     Debug.Log("setting session rr int");
                 }
                 else //vector
                 {
-                    planner.setSessionVector3(rrJSON.inputs[i].nodename, planner.getVectorValue(tokens[i + 1]));
+                    balTrikePlanner.setSessionVector3(rrJSON.inputs[i].nodename, balTrikePlanner.getVectorValue(tokens[i + 1]));
                     Debug.Log("setting session rr vector");
                 }
             }
@@ -481,12 +515,12 @@ public class ZXEZXYKQuadShell : MonoBehaviour
             {
                 if (segsJSON.inputs[i].returntype == "int")
                 {
-                    planner.setSessionInt(segsJSON.inputs[i].nodename, planner.getIntValue(tokens[i + 1]));
+                    balTrikePlanner.setSessionInt(segsJSON.inputs[i].nodename, balTrikePlanner.getIntValue(tokens[i + 1]));
                     Debug.Log("setting session segs int");
                 }
                 else //vector
                 {
-                    planner.setSessionVector3(segsJSON.inputs[i].nodename, planner.getVectorValue(tokens[i + 1]));
+                    balTrikePlanner.setSessionVector3(segsJSON.inputs[i].nodename, balTrikePlanner.getVectorValue(tokens[i + 1]));
                     Debug.Log("setting session segs vector");
                 }
             }
