@@ -261,7 +261,7 @@ public class Machine2ZXYEPlanner : MonoBehaviour
         string jsonString = JsonUtility.ToJson(sessionValuesJSON, true);
 
         StreamWriter sWriter;
-        string path = "c://sites//notstop//" + a;
+        string path = "c://crek//db//" + a;
         sWriter = new StreamWriter(path);
         sWriter.Write(jsonString);
         sWriter.Close();
@@ -271,7 +271,7 @@ public class Machine2ZXYEPlanner : MonoBehaviour
     public void importsessionvalues(string a = "", string b = "", string c = "", string d = "", string e = "")
     {
         StreamReader sReader;
-        string path = "c://sites//notstop//" + a;//  BLSphere8Quadsv2.json"; //Application.persistentDataPath + "/trajectory/" + trajectoryName + ".json";
+        string path = "c://crek//db//" + a;//  BLSphere8Quadsv2.json"; //Application.persistentDataPath + "/trajectory/" + trajectoryName + ".json";
         sReader = new StreamReader(path);
         string fileString = sReader.ReadToEnd();
 
@@ -324,7 +324,7 @@ public class Machine2ZXYEPlanner : MonoBehaviour
         string jsonString = JsonUtility.ToJson(sessionValuesOldJSON, true);
 
         StreamWriter sWriter;
-        string path = "c://sites//notstop//" + a;
+        string path = "c://crek//db//" + a;
         sWriter = new StreamWriter(path);
         sWriter.Write(jsonString);
         sWriter.Close();
@@ -334,7 +334,7 @@ public class Machine2ZXYEPlanner : MonoBehaviour
     public void importsessionOLDvalues(string a = "", string b = "", string c = "", string d = "", string e = "")
     {
         StreamReader sReader;
-        string path = "c://sites//notstop//" + a;//  BLSphere8Quadsv2.json"; //Application.persistentDataPath + "/trajectory/" + trajectoryName + ".json";
+        string path = "c://crek//db//" + a;//  BLSphere8Quadsv2.json"; //Application.persistentDataPath + "/trajectory/" + trajectoryName + ".json";
         sReader = new StreamReader(path);
         string fileString = sReader.ReadToEnd();
 
@@ -550,7 +550,7 @@ public class Machine2ZXYEPlanner : MonoBehaviour
     {
         //string path = Application.persistentDataPath + "/trajectory/";
 
-        string path = "c:\\sites\\notstop\\trajectory\\";
+        string path = "c:\\crek\\db\\trajectory\\";
         DirectoryInfo dir = new DirectoryInfo(path);
         FileInfo[] info = dir.GetFiles("*.json");
 
@@ -571,7 +571,7 @@ public class Machine2ZXYEPlanner : MonoBehaviour
     //this one uses the Trajectory assets loaded from the files
     Trajectory getTrajectoryByName0(string trajName)
     {
-        string path = "c:\\sites\\notstop\\trajectory\\";
+        string path = "c:\\crek\\db\\trajectory\\";
 
         Trajectory traj = (Trajectory)Resources.Load("Prefabs/Trajectory", typeof(Trajectory));
 

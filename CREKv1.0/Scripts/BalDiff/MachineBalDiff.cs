@@ -665,7 +665,7 @@ public class MachineBalDiff : MonoBehaviour
                 motionCompletedToken = incoming.messagestring;
             }
             
-            if (incoming.topic == "NSC/BalDiff/Motion/pose.tr")//pose translate
+            if (incoming.topic == "CR/BalDiff/Motion/pose.tr")//pose translate
             {
                 Float3JSON float3JSON = JsonUtility.FromJson<Float3JSON>(incoming.messagestring);
                 posePos.x = float3JSON.x; posePos.y = float3JSON.y; posePos.z = float3JSON.z;

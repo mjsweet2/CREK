@@ -658,7 +658,7 @@ public class Machine2ZXYE : MonoBehaviour
             {
                 motionCompletedToken = incoming.messagestring;
             }
-            if(incoming.topic == "NSC/Trike/Motion/poseSegs")
+            if(incoming.topic == "CR/Trike/Motion/poseSegs")
             {
                 poseSegs = Vector3.zero;
                 string[] pieces = incoming.messagestring.Split(',');

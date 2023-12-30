@@ -14,8 +14,8 @@ public class Machine2ZXYEShell : MonoBehaviour
 
     public Machine2ZXYE machine2ZXYE;
     public Machine2ZXYEPlanner planner;
-    public NSMotionDBController nsMotiondb;
-    public NSTaskDBController nsTaskdb;
+    public CRMotionDBController crMotiondb;
+    public CRTaskDBController crTaskdb;
     public Machine2ZXYETask machine2ZXYETask;
     public Articulated2ZXYE articulated2ZXYE;
 
@@ -58,7 +58,7 @@ public class Machine2ZXYEShell : MonoBehaviour
 
     public void setupsessionvaluesfromfile()
     {
-        string path = "c:\\sites\\notstop\\setupsessionvalues.txt";
+        string path = "c:\\crek\\db\\setupsessionvalues.txt";
         StreamReader reader = new StreamReader(path);
         string fileLine = "";
         fileLine = reader.ReadLine();
@@ -184,22 +184,22 @@ public class Machine2ZXYEShell : MonoBehaviour
         {
 
             //is this a motion call
-            string firstNodeNamelf = nsMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lf");
-            string firstNodeNamelr = nsMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lr");
+            string firstNodeNamelf = crMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lf");
+            string firstNodeNamelr = crMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lr");
 
-            string firstNodeNamesegs = nsMotiondb.getFirstNodeByMotionName(iTokens[0] + ".segs");
+            string firstNodeNamesegs = crMotiondb.getFirstNodeByMotionName(iTokens[0] + ".segs");
 
-            string firstNodeNamelfl = nsMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lfl");
-            string firstNodeNamelfu = nsMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lfu");
-            string firstNodeNamerfl = nsMotiondb.getFirstNodeByMotionName(iTokens[0] + ".rfl");
-            string firstNodeNamerfu = nsMotiondb.getFirstNodeByMotionName(iTokens[0] + ".rfu");
+            string firstNodeNamelfl = crMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lfl");
+            string firstNodeNamelfu = crMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lfu");
+            string firstNodeNamerfl = crMotiondb.getFirstNodeByMotionName(iTokens[0] + ".rfl");
+            string firstNodeNamerfu = crMotiondb.getFirstNodeByMotionName(iTokens[0] + ".rfu");
 
             string combined = firstNodeNamelf + firstNodeNamelr + firstNodeNamesegs;
             combined = combined + firstNodeNamelfl + firstNodeNamelfu + firstNodeNamerfl + firstNodeNamerfu;
 
 
             //is this a task call
-            string firstTaskNodeName = nsTaskdb.getFirstNodeByTaskName(iTokens[0]);
+            string firstTaskNodeName = crTaskdb.getFirstNodeByTaskName(iTokens[0]);
 
             Debug.Log("Motion firstNodeName: " + combined);
             Debug.Log("Task firstNodeName: " + firstTaskNodeName);
@@ -306,12 +306,12 @@ public class Machine2ZXYEShell : MonoBehaviour
 
 
         List<string> motionInputStr = new List<string>();
-        List<NSInputsJSON> jsons = new List<NSInputsJSON>();
+        List<CRInputsJSON> jsons = new List<CRInputsJSON>();
         for (int i = 0; i < machine2ZXYE.motionChannels.Count; i++)
         {
-            motionInputStr.Add(nsMotiondb.getInputStringByMotion(tokens[0] + "." + machine2ZXYE.motionChannels[i]));
-            if (motionInputStr[i] == "") motionInputStr[i] = JsonUtility.ToJson(new NSInputsJSON());
-            jsons.Add(JsonUtility.FromJson<NSInputsJSON>(motionInputStr[i]));
+            motionInputStr.Add(crMotiondb.getInputStringByMotion(tokens[0] + "." + machine2ZXYE.motionChannels[i]));
+            if (motionInputStr[i] == "") motionInputStr[i] = JsonUtility.ToJson(new CRInputsJSON());
+            jsons.Add(JsonUtility.FromJson<CRInputsJSON>(motionInputStr[i]));
 
 
             //type checking   

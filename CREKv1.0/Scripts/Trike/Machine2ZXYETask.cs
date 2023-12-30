@@ -10,11 +10,11 @@ using UnityEngine;
 public class Machine2ZXYETask : MonoBehaviour
 {
 
-	public NSTaskDBController nsTaskDB;
-	public NSMotionDBController nsMotionDB;
+	public CRTaskDBController nsTaskDB;
+	public CRMotionDBController nsMotionDB;
 	public Machine2ZXYE machine2ZXYE;
 	public TaskMessageSubscriber taskMessageSubscriber;
-	public M2MqttNSCClient m2MqttNSCClient;
+	public M2MqttCRClient m2MqttNSCClient;
 
 	public Machine2ZXYEPlanner planner;
 
@@ -183,7 +183,7 @@ public class Machine2ZXYETask : MonoBehaviour
 			if (message == "")
 			{
 				string inputs = nsTaskDB.getInputStringFromTopicMessageTINode(currentNodeName);
-				NSInputsJSON inputsJSON = JsonUtility.FromJson<NSInputsJSON>(inputs);
+				CRInputsJSON inputsJSON = JsonUtility.FromJson<CRInputsJSON>(inputs);
 				Vector3 messageVector3 = resolveVectorInput(inputsJSON.inputs[0]);
 				Float3JSON float3JSON = new Float3JSON();
 				float3JSON.x = messageVector3.x; float3JSON.y = messageVector3.y; float3JSON.z = messageVector3.z;
@@ -278,7 +278,7 @@ public class Machine2ZXYETask : MonoBehaviour
 				if(message == "")
                 {
 					string inputs = nsTaskDB.getInputStringFromTopicMessageTINode(currentNodeName);
-					NSInputsJSON inputsJSON = JsonUtility.FromJson< NSInputsJSON>(inputs);
+					CRInputsJSON inputsJSON = JsonUtility.FromJson< CRInputsJSON>(inputs);
 					Vector3 messageVector3 = resolveVectorInput(inputsJSON.inputs[0]);
 					Float3JSON float3JSON = new Float3JSON();
 					float3JSON.x = messageVector3.x; float3JSON.y = messageVector3.y; float3JSON.z = messageVector3.z;
@@ -332,17 +332,17 @@ public class Machine2ZXYETask : MonoBehaviour
 		bool typesMatch = true;
 
 		string motionTIInputString = nsTaskDB.getInputStringFromMotionTINode(motionTINodeName);
-		NSInputsJSON motionTIInputs = JsonUtility.FromJson<NSInputsJSON>(motionTIInputString);
+		CRInputsJSON motionTIInputs = JsonUtility.FromJson<CRInputsJSON>(motionTIInputString);
 		Debug.Log("motionTI inputString: " + motionTIInputString);
 
 		List<string> motionInputStrings = new List<string>();
-		List<NSInputsJSON> motionChannelInputs = new List<NSInputsJSON>();
+		List<CRInputsJSON> motionChannelInputs = new List<CRInputsJSON>();
 
 		for (int i = 0; i < machine2ZXYE.motionChannels.Count; i++)
 		{
 			motionInputStrings.Add(nsMotionDB.getInputStringByMotion(motionName + "." + machine2ZXYE.motionChannels[i]));
-			if (motionInputStrings[i] == "") motionInputStrings[i] = JsonUtility.ToJson(new NSInputsJSON());
-			motionChannelInputs.Add(JsonUtility.FromJson<NSInputsJSON>(motionInputStrings[i]));
+			if (motionInputStrings[i] == "") motionInputStrings[i] = JsonUtility.ToJson(new CRInputsJSON());
+			motionChannelInputs.Add(JsonUtility.FromJson<CRInputsJSON>(motionInputStrings[i]));
 			Debug.Log(motionName + "." + machine2ZXYE.motionChannels[i] + ": "+ motionInputStrings[i]);
 
 			//type checking   
@@ -420,7 +420,7 @@ public class Machine2ZXYETask : MonoBehaviour
 
 	Trajectory resolveTrajByNodeName(string nodeName) {return Instantiate<Trajectory>(planner.template); }
 	//these functions follow each input node in a depth first search
-	Vector3 resolveVectorInput(NSInputJSON nsInputJSON)
+	Vector3 resolveVectorInput(CRInputJSON nsInputJSON)
 	{
 		if (nsInputJSON.nodename == "")
 			return Vector3.negativeInfinity;
@@ -441,7 +441,7 @@ public class Machine2ZXYETask : MonoBehaviour
 		{
 			string vMathInputs = nsTaskDB.getInputStringFromVectorMathNode(nsInputJSON.nodename);
 			string ops = nsTaskDB.getOperationFromVectorMathNode(nsInputJSON.nodename);
-			NSInputsJSON vMathInputsJSON = JsonUtility.FromJson<NSInputsJSON>(vMathInputs);
+			CRInputsJSON vMathInputsJSON = JsonUtility.FromJson<CRInputsJSON>(vMathInputs);
 
 			Vector3 a = resolveVectorInput(vMathInputsJSON.inputs[0]);
 			Vector3 vb = resolveVectorInput(vMathInputsJSON.inputs[1]);
@@ -457,7 +457,7 @@ public class Machine2ZXYETask : MonoBehaviour
 		else if (nodeType == "FloatsToFloat3")
         {
 			string fInputs = nsTaskDB.getInputStringFromFloatsToFloat3Node(nsInputJSON.nodename);
-			NSInputsJSON fInputsJSON = JsonUtility.FromJson<NSInputsJSON>(fInputs);
+			CRInputsJSON fInputsJSON = JsonUtility.FromJson<CRInputsJSON>(fInputs);
 			float a = resolveFloatInput(fInputsJSON.inputs[0]);
 			float b = resolveFloatInput(fInputsJSON.inputs[1]);
 			float c = resolveFloatInput(fInputsJSON.inputs[2]);
@@ -472,7 +472,7 @@ public class Machine2ZXYETask : MonoBehaviour
 		else
 			return Vector3.negativeInfinity;
 	}
-	int resolveIntInput(NSInputJSON nsInputJSON)
+	int resolveIntInput(CRInputJSON nsInputJSON)
 	{
 		if (nsInputJSON.nodename == "")
 			return 0;
@@ -496,7 +496,7 @@ public class Machine2ZXYETask : MonoBehaviour
 		{
 			string vMathInputs = nsTaskDB.getInputStringFromMathNode(nsInputJSON.nodename);
 			string ops = nsTaskDB.getOperationFromMathNode(nsInputJSON.nodename);
-			NSInputsJSON vMathInputsJSON = JsonUtility.FromJson<NSInputsJSON>(vMathInputs);
+			CRInputsJSON vMathInputsJSON = JsonUtility.FromJson<CRInputsJSON>(vMathInputs);
 
 			int a = resolveIntInput(vMathInputsJSON.inputs[0]);
 			int b = resolveIntInput(vMathInputsJSON.inputs[1]);
@@ -511,7 +511,7 @@ public class Machine2ZXYETask : MonoBehaviour
 		else
 			return 0;
 	}
-	float resolveFloatInput(NSInputJSON nsInputJSON)
+	float resolveFloatInput(CRInputJSON nsInputJSON)
 	{
 		if (nsInputJSON.nodename == "")
 			return 0;
@@ -545,7 +545,7 @@ public class Machine2ZXYETask : MonoBehaviour
 		{
 			string vMathInputs = nsTaskDB.getInputStringFromMathNode(nsInputJSON.nodename);
 			string ops = nsTaskDB.getOperationFromMathNode(nsInputJSON.nodename);
-			NSInputsJSON vMathInputsJSON = JsonUtility.FromJson<NSInputsJSON>(vMathInputs);
+			CRInputsJSON vMathInputsJSON = JsonUtility.FromJson<CRInputsJSON>(vMathInputs);
 
 			float a = resolveFloatInput(vMathInputsJSON.inputs[0]);
 			float b = resolveFloatInput(vMathInputsJSON.inputs[1]);
@@ -581,7 +581,7 @@ public class Machine2ZXYETask : MonoBehaviour
 		else
 			return float.NegativeInfinity;
 	}
-	bool resolveBoolInput(NSInputJSON nsInputJSON)
+	bool resolveBoolInput(CRInputJSON nsInputJSON)
     {
 		bool result = false;
 
@@ -597,7 +597,7 @@ public class Machine2ZXYETask : MonoBehaviour
 			string floatBoolInputs = nsTaskDB.getInputStringFromFloatBoolNode(nsInputJSON.nodename);
 
 			string ops = nsTaskDB.getOperationFromFloatBoolNode(nsInputJSON.nodename);
-			NSInputsJSON floatBoolInputsJSON = JsonUtility.FromJson<NSInputsJSON>(floatBoolInputs);
+			CRInputsJSON floatBoolInputsJSON = JsonUtility.FromJson<CRInputsJSON>(floatBoolInputs);
 
 			float a = resolveFloatInput(floatBoolInputsJSON.inputs[0]);
 			float b = resolveFloatInput(floatBoolInputsJSON.inputs[1]);
@@ -671,7 +671,7 @@ public class Machine2ZXYETask : MonoBehaviour
 			else if (currentNodeType == "BoolFlow")
 			{
 				string ret = nsTaskDB.getInputStringFromBoolFlowNode(currentNodeName);
-				NSInputsJSON inputs = JsonUtility.FromJson<NSInputsJSON>(ret);
+				CRInputsJSON inputs = JsonUtility.FromJson<CRInputsJSON>(ret);
 				bool exitValue = resolveBoolInput(inputs.inputs[0]); //this is a list, send a single
 
 				if(exitValue)

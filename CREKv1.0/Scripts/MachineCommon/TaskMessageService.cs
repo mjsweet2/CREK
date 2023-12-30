@@ -14,7 +14,7 @@ public class TaskMessageService : MonoBehaviour
 
     public bool isActive;   //this object needs to exist before, I can register subscriptions
 
-    public M2MqttNSCClient m2MqttNSCClient;
+    public M2MqttCRClient m2MqttNSCClient;
 
     [Serializable]
     public class TaskMessageSubscription

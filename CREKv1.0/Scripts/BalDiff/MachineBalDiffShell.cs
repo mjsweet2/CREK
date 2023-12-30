@@ -14,8 +14,8 @@ public class MachineBalDiffShell : MonoBehaviour
 
     public MachineBalDiff machineBalDiff;
     public MachineBalDiffPlanner planner;
-    public NSMotionDBController nsMotiondb;
-    public NSTaskDBController nsTaskdb;
+    public CRMotionDBController crMotiondb;
+    public CRTaskDBController crTaskdb;
     public MachineBalDiffTask machineBalDiffTask;
     public ArticulatedBalDiff articulatedBalDiff;
 
@@ -159,22 +159,23 @@ public class MachineBalDiffShell : MonoBehaviour
             bool leftTrajExist = false, rightTrajExist = false;   
             if (iTokens.Length == 2)
             {
+                
                 //is this a traj in the planner, always recieve 2 toekns for left and right wheel
                 leftTrajExist = planner.doesTrajectoryExist(iTokens[0]);
                 rightTrajExist = planner.doesTrajectoryExist(iTokens[1]);
             }
 
-
+            
             //is this a motion call
-            string firstNodeNamelw = nsMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lw");
-            string firstNodeNamerw = nsMotiondb.getFirstNodeByMotionName(iTokens[0] + ".rw");
+            string firstNodeNamelw = crMotiondb.getFirstNodeByMotionName(iTokens[0] + ".lw");
+            string firstNodeNamerw = crMotiondb.getFirstNodeByMotionName(iTokens[0] + ".rw");
 
             string combined = firstNodeNamelw + firstNodeNamerw;
           
 
 
             //is this a task call
-            string firstTaskNodeName = nsTaskdb.getFirstNodeByTaskName(iTokens[0]);
+            string firstTaskNodeName = crTaskdb.getFirstNodeByTaskName(iTokens[0]);
 
             Debug.Log("Motion firstNodeName: " + combined);
             Debug.Log("Task firstNodeName: " + firstTaskNodeName);
@@ -222,9 +223,9 @@ public class MachineBalDiffShell : MonoBehaviour
             {
                 machineBalDiff.runCmd(iTokens[0]);
             }
-            else if (leftTrajExist & rightTrajExist)
+            else if (machineBalDiff.motionMode == MachineBalDiff.MOTIONMODE.TRAJECTORY)
             {
-                if (machineBalDiff.motionMode == MachineBalDiff.MOTIONMODE.TRAJECTORY)
+                if (leftTrajExist & rightTrajExist)
                 {
                     machineBalDiff.runTrajectoryOnChannel(iTokens[0]);
                     machineBalDiff.runTrajectoryOnChannel(iTokens[1]);
@@ -286,12 +287,12 @@ public class MachineBalDiffShell : MonoBehaviour
 
 
         List<string> motionInputStr = new List<string>();
-        List<NSInputsJSON> jsons = new List<NSInputsJSON>();
+        List<CRInputsJSON> jsons = new List<CRInputsJSON>();
         for (int i = 0; i < machineBalDiff.motionChannels.Count; i++)
         {
-            motionInputStr.Add(nsMotiondb.getInputStringByMotion(tokens[0] + "." + machineBalDiff.motionChannels[i]));
-            if (motionInputStr[i] == "") motionInputStr[i] = JsonUtility.ToJson(new NSInputsJSON());
-            jsons.Add(JsonUtility.FromJson<NSInputsJSON>(motionInputStr[i]));
+            motionInputStr.Add(crMotiondb.getInputStringByMotion(tokens[0] + "." + machineBalDiff.motionChannels[i]));
+            if (motionInputStr[i] == "") motionInputStr[i] = JsonUtility.ToJson(new CRInputsJSON());
+            jsons.Add(JsonUtility.FromJson<CRInputsJSON>(motionInputStr[i]));
 
 
             //type checking   

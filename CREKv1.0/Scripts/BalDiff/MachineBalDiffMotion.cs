@@ -9,12 +9,13 @@ using UnityEngine;
 
 public class MachineBalDiffMotion : MonoBehaviour
 {
-	public NSMotionDBController nsdb;
+	public CRMotionDBController nsdb;
 	public MachineBalDiffPlanner planner;
 
 	public Trajectory currTraj;
 
 	public string currentNode;
+	public string currentMotionName;
 	public bool currentMotionIsOver;
 	public string stateInput;
 	public float stateInputFloat;
@@ -81,10 +82,11 @@ public class MachineBalDiffMotion : MonoBehaviour
 
 		if (retNode == "")
 		{
+			currentMotionName = "";
 			currentNode = "";
 			return;
 		}
-
+		currentMotionName = motionName;
 		currentNode = retNode;
 		currentMotionIsOver = false;
 		Debug.Log("traj name: " + nsdb.getTrajectoryByNode(currentNode));
@@ -146,7 +148,7 @@ public class MachineBalDiffMotion : MonoBehaviour
 			Trajectory retTraj = Instantiate<Trajectory>(planner.template);
 			string nodeInputString = nsdb.getInputStringByNode(nodeName);
 			Debug.Log("inputString: " + nodeInputString);
-			NSInputsJSON inputsJSON = JsonUtility.FromJson<NSInputsJSON>(nodeInputString);
+			CRInputsJSON inputsJSON = JsonUtility.FromJson<CRInputsJSON>(nodeInputString);
 
 			//following is in development, needs more testing
 			Vector3 aa = resolveVectorInput(inputsJSON.inputs[0]);
@@ -174,7 +176,7 @@ public class MachineBalDiffMotion : MonoBehaviour
 			Trajectory retTraj = Instantiate<Trajectory>(planner.template);
 			string nodeInputString = nsdb.getInputStringByNode(nodeName);
 			Debug.Log("inputString: " + nodeInputString);
-			NSInputsJSON inputsJSON = JsonUtility.FromJson<NSInputsJSON>(nodeInputString);
+			CRInputsJSON inputsJSON = JsonUtility.FromJson<CRInputsJSON>(nodeInputString);
 
 			//following is in development, needs more testing
 			Vector3 aa = resolveVectorInput(inputsJSON.inputs[0]);
@@ -196,7 +198,7 @@ public class MachineBalDiffMotion : MonoBehaviour
 		}
 	}
 	//these functions follow each input node in a depth firstsearch
-	Vector3 resolveVectorInput(NSInputJSON nsInputJSON)
+	Vector3 resolveVectorInput(CRInputJSON nsInputJSON)
 	{
 		if (nsInputJSON.nodename == "")
 			return Vector3.negativeInfinity;
@@ -217,7 +219,7 @@ public class MachineBalDiffMotion : MonoBehaviour
 		{
 			string vMathInputs = nsdb.getInputStringFromVectorMathNode(nsInputJSON.nodename);
 			string ops = nsdb.getOperationFromVectorMathNode(nsInputJSON.nodename);
-			NSInputsJSON vMathInputsJSON = JsonUtility.FromJson<NSInputsJSON>(vMathInputs);
+			CRInputsJSON vMathInputsJSON = JsonUtility.FromJson<CRInputsJSON>(vMathInputs);
 
 			Vector3 a = resolveVectorInput(vMathInputsJSON.inputs[0]);
 			Vector3 vb = resolveVectorInput(vMathInputsJSON.inputs[1]);
@@ -237,7 +239,7 @@ public class MachineBalDiffMotion : MonoBehaviour
 		else
 			return Vector3.negativeInfinity;
 	}
-	int resolveIntInput(NSInputJSON nsInputJSON)
+	int resolveIntInput(CRInputJSON nsInputJSON)
 	{
 		if (nsInputJSON.nodename == "")
 			return 0;
@@ -261,7 +263,7 @@ public class MachineBalDiffMotion : MonoBehaviour
 		{
 			string vMathInputs = nsdb.getInputStringFromMathNode(nsInputJSON.nodename);
 			string ops = nsdb.getOperationFromMathNode(nsInputJSON.nodename);
-			NSInputsJSON vMathInputsJSON = JsonUtility.FromJson<NSInputsJSON>(vMathInputs);
+			CRInputsJSON vMathInputsJSON = JsonUtility.FromJson<CRInputsJSON>(vMathInputs);
 
 			int a = resolveIntInput(vMathInputsJSON.inputs[0]);
 			int b = resolveIntInput(vMathInputsJSON.inputs[1]);
@@ -276,7 +278,7 @@ public class MachineBalDiffMotion : MonoBehaviour
 		else
 			return 0;
 	}
-	float resolveFloatInput(NSInputJSON nsInputJSON)
+	float resolveFloatInput(CRInputJSON nsInputJSON)
 	{
 		if (nsInputJSON.nodename == "")
 			return 0;
@@ -296,7 +298,7 @@ public class MachineBalDiffMotion : MonoBehaviour
 		{
 			string vMathInputs = nsdb.getInputStringFromMathNode(nsInputJSON.nodename);
 			string ops = nsdb.getOperationFromMathNode(nsInputJSON.nodename);
-			NSInputsJSON vMathInputsJSON = JsonUtility.FromJson<NSInputsJSON>(vMathInputs);
+			CRInputsJSON vMathInputsJSON = JsonUtility.FromJson<CRInputsJSON>(vMathInputs);
 
 			float a = resolveFloatInput(vMathInputsJSON.inputs[0]);
 			float b = resolveFloatInput(vMathInputsJSON.inputs[1]);
@@ -321,7 +323,7 @@ public class MachineBalDiffMotion : MonoBehaviour
 	}
 	public void resetMotion()
 	{
-		currentNode = nsdb.getFirstNode();
+		currentNode = nsdb.getFirstNodeByMotionName(currentMotionName);
 		currentMotionIsOver = false;
 		currTraj = getTrajectoryByName(nsdb.getTrajectoryByNode(currentNode));
 		currTraj.resetTrajectory(motionSpeed);

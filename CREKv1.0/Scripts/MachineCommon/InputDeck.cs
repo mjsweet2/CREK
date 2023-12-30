@@ -154,7 +154,7 @@ public class InputDeck : MonoBehaviour
         DateTime rightNow = System.DateTime.Now;
         string seperator = ".";
         string timeString = rightNow.Hour.ToString() + seperator + rightNow.Minute.ToString() + seperator + rightNow.Second.ToString();
-        string path = "c:\\sites\\inputrecord\\";
+        string path = "c:\\crek\\inputrecord\\";
 
         System.Object theM = mouseInput;
         System.Object theRS = rsInput;
