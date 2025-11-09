@@ -1,0 +1,23 @@
+{
+    "skillSpaceMode": 1,
+    "stateMode": 3,
+    "stateCount": 12,
+    "stateMap": [],
+    "actionMode": 1,
+    "actionCount": 8,
+    "actionMap": [],
+    "goalDeltaRadians": -0.52,
+    "goalDeltaPos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "lfModelName": "lfmodel",
+    "rfModelName": "rfmodel",
+    "lrModelName": "",
+    "rrModelName": "",
+    "segsModelName": "",
+    "hasChildren": false,
+    "customModelList": [],
+    "childModelList": []
+}
